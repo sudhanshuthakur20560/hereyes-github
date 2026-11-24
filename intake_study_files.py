@@ -68,50 +68,59 @@ def main():
     transferred = 0
 
     # 1. Check loose downloads for new circulars and study materials
-    for pattern in ["Circular_*.pdf", "*IWT*", "*FCS*", "*SPC*", "*LAC*"]:
-        for p in glob.glob(os.path.join(DOWNLOADS_DIR, pattern)):
-            if os.path.isfile(p):
-                fname = os.path.basename(p)
-                dest_dir = route_file(fname)
-                if dest_dir:
-                    h = get_hash(p)
-                    if h and h not in repo_hashes:
-                        os.makedirs(dest_dir, exist_ok=True)
-                        dest_path = os.path.join(dest_dir, fname)
-                        shutil.copy2(p, dest_path)
-                        repo_hashes.add(h)
-                        transferred += 1
-                        print(f"Auto-intake: Copied {fname} -> {os.path.relpath(dest_dir, REPO_BTECH)}")
+    try:
+        for pattern in ["Circular_*.pdf", "*IWT*", "*FCS*", "*SPC*", "*LAC*"]:
+            for p in glob.glob(os.path.join(DOWNLOADS_DIR, pattern)):
+                if os.path.isfile(p):
+                    fname = os.path.basename(p)
+                    dest_dir = route_file(fname)
+                    if dest_dir:
+                        h = get_hash(p)
+                        if h and h not in repo_hashes:
+                            os.makedirs(dest_dir, exist_ok=True)
+                            dest_path = os.path.join(dest_dir, fname)
+                            shutil.copy2(p, dest_path)
+                            repo_hashes.add(h)
+                            transferred += 1
+                            print(f"Auto-intake: Copied {fname} -> {os.path.relpath(dest_dir, REPO_BTECH)}")
+    except (PermissionError, OSError):
+        pass
 
     # 2. Check College & Study folder for any new files
-    if os.path.exists(COLLEGE_DIR):
-        for f in os.listdir(COLLEGE_DIR):
-            p = os.path.join(COLLEGE_DIR, f)
-            if os.path.isfile(p) and not f.startswith("."):
-                dest_dir = route_file(f)
-                if dest_dir:
-                    h = get_hash(p)
-                    if h and h not in repo_hashes:
-                        os.makedirs(dest_dir, exist_ok=True)
-                        dest_path = os.path.join(dest_dir, f)
-                        shutil.copy2(p, dest_path)
-                        repo_hashes.add(h)
-                        transferred += 1
-                        print(f"Auto-intake: Copied {f} -> {os.path.relpath(dest_dir, REPO_BTECH)}")
+    try:
+        if os.path.exists(COLLEGE_DIR):
+            for f in os.listdir(COLLEGE_DIR):
+                p = os.path.join(COLLEGE_DIR, f)
+                if os.path.isfile(p) and not f.startswith("."):
+                    dest_dir = route_file(f)
+                    if dest_dir:
+                        h = get_hash(p)
+                        if h and h not in repo_hashes:
+                            os.makedirs(dest_dir, exist_ok=True)
+                            dest_path = os.path.join(dest_dir, f)
+                            shutil.copy2(p, dest_path)
+                            repo_hashes.add(h)
+                            transferred += 1
+                            print(f"Auto-intake: Copied {f} -> {os.path.relpath(dest_dir, REPO_BTECH)}")
+    except (PermissionError, OSError):
+        pass
 
     # 3. Check Documents for Testpad screenshots
-    for p in glob.glob(os.path.join(DOCS_DIR, "Screenshot*.png")):
-        if os.path.isfile(p):
-            fname = os.path.basename(p)
-            dest_dir = os.path.join(REPO_BTECH, "Questions_and_Assessments/Chitkara_Testpad_Coding/Screenshots")
-            h = get_hash(p)
-            if h and h not in repo_hashes:
-                os.makedirs(dest_dir, exist_ok=True)
-                dest_path = os.path.join(dest_dir, fname)
-                shutil.copy2(p, dest_path)
-                repo_hashes.add(h)
-                transferred += 1
-                print(f"Auto-intake: Copied {fname} -> Questions_and_Assessments/Chitkara_Testpad_Coding/Screenshots")
+    try:
+        for p in glob.glob(os.path.join(DOCS_DIR, "Screenshot*.png")):
+            if os.path.isfile(p):
+                fname = os.path.basename(p)
+                dest_dir = os.path.join(REPO_BTECH, "Questions_and_Assessments/Chitkara_Testpad_Coding/Screenshots")
+                h = get_hash(p)
+                if h and h not in repo_hashes:
+                    os.makedirs(dest_dir, exist_ok=True)
+                    dest_path = os.path.join(dest_dir, fname)
+                    shutil.copy2(p, dest_path)
+                    repo_hashes.add(h)
+                    transferred += 1
+                    print(f"Auto-intake: Copied {fname} -> Questions_and_Assessments/Chitkara_Testpad_Coding/Screenshots")
+    except (PermissionError, OSError):
+        pass
 
     if transferred > 0:
         print(f"Auto-intake completed: {transferred} new file(s) ingested into B.Tech")
