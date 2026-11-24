@@ -5,21 +5,22 @@
 # ==============================================================================
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LOCK_FILE="/tmp/btech_autosync.lock"
+LOCK_DIR="/tmp/btech_autosync.lock.d"
 LOG_FILE="$HOME/Library/Logs/btech_autosync.log"
 
 mkdir -p "$HOME/Library/Logs"
 
-# Ensure single instance runs at a time
-exec 200>"$LOCK_FILE"
-flock -n 200 2>/dev/null || {
-    # If flock is not available on BSD/macOS, use a directory-based lock fallback
-    if [ -d "${LOCK_FILE}.d" ]; then
+# Simple atomic directory lock for macOS
+if ! mkdir "$LOCK_DIR" 2>/dev/null; then
+    # Lock exists. Check if stale (older than 10 minutes)
+    if [ $(find "$LOCK_DIR" -mmin +10 2>/dev/null) ]; then
+        rm -rf "$LOCK_DIR"
+        mkdir "$LOCK_DIR" 2>/dev/null || exit 0
+    else
         exit 0
     fi
-    mkdir "${LOCK_FILE}.d" 2>/dev/null || exit 0
-    trap 'rm -rf "${LOCK_FILE}.d"' EXIT
-}
+fi
+trap 'rm -rf "$LOCK_DIR"' EXIT
 
 cd "$REPO_DIR"
 
@@ -36,11 +37,6 @@ STATUS=$(git status --porcelain)
 if [ -n "$STATUS" ]; then
     log "Changes detected in repository. Initiating auto-sync..."
 
-    # Pull latest changes from remote
-    git pull --rebase origin main >> "$LOG_FILE" 2>&1 || {
-        log "Warning: Rebase pull encountered conflicts or remote is unavailable."
-    }
-
     # Stage all changes
     git add .
 
@@ -51,6 +47,11 @@ if [ -n "$STATUS" ]; then
     fi
 
     git commit -m "$COMMIT_MSG" >> "$LOG_FILE" 2>&1 || true
+
+    # Pull rebase remote changes cleanly
+    git pull --rebase origin main >> "$LOG_FILE" 2>&1 || {
+        log "Warning: Rebase pull encountered conflicts or remote is unavailable."
+    }
 
     # Push to origin main
     git push origin main >> "$LOG_FILE" 2>&1 && {
