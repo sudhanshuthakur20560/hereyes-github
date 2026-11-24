@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Partial Derivatives Mock Test (CAT-1) — Advanced</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,600;0,700;1,400&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#f2f4f9; --surface:#ffffff; --ink:#0f1a36; --muted:#57627b; --line:#d6dceb;
+  --accent:#2a4bd6; --accent-ink:#ffffff; --accent-soft:#e5ebff;
+  --ok:#16703f; --ok-soft:#e0f3e8; --bad:#b3261e; --bad-soft:#fde8e6; --warn:#8a5a00; --warn-soft:#fff0d1;
+  --case:#7a3fb5; --case-soft:#f1e6fb;
+  --serif:"STIX Two Text","Cambria Math",Georgia,"Times New Roman",serif;
+  --sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0d1324; --surface:#151c33; --ink:#e8ecf7; --muted:#9ba6c2; --line:#2a3455;
+    --accent:#86a1ff; --accent-ink:#0d1324; --accent-soft:#1e2a55;
+    --ok:#62d59d; --ok-soft:#12331f; --bad:#ff8f86; --bad-soft:#3a1b1b; --warn:#f2bd5f; --warn-soft:#372a10;
+    --case:#c199ec; --case-soft:#2a1e3d;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0d1324; --surface:#151c33; --ink:#e8ecf7; --muted:#9ba6c2; --line:#2a3455;
+  --accent:#86a1ff; --accent-ink:#0d1324; --accent-soft:#1e2a55;
+  --ok:#62d59d; --ok-soft:#12331f; --bad:#ff8f86; --bad-soft:#3a1b1b; --warn:#f2bd5f; --warn-soft:#372a10;
+  --case:#c199ec; --case-soft:#2a1e3d;
+}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1080px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-family:var(--serif);font-weight:700;font-size:18px;margin-right:auto;letter-spacing:.1px}
+.stat{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.stat b{color:var(--ink);font-weight:600}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:9px 16px;font-weight:600;font-size:14px}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--muted)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.progress{height:3px;background:var(--line)}
+.progress i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s}
+
+main{max-width:1080px;margin:0 auto;padding:20px 16px 48px}
+
+.start{max-width:680px;margin:32px auto}
+.start h1{font-family:var(--serif);font-size:clamp(28px,5vw,40px);line-height:1.15;margin:0 0 6px}
+.start .sub{color:var(--muted);margin:0 0 24px}
+.rules{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:6px 20px;margin-bottom:24px}
+.rules div{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line)}
+.rules div:last-child{border-bottom:0}
+.rules span{color:var(--muted)}
+.rules b{font-variant-numeric:tabular-nums;text-align:right}
+.topics{color:var(--muted);font-size:14px;margin:0 0 24px}
+.badge{display:inline-block;background:var(--case-soft);color:var(--case);border-radius:999px;padding:3px 10px;font-size:12.5px;font-weight:600;margin-bottom:14px}
+
+.test{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start}
+@media (max-width:860px){.test{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.qcard{padding:22px 24px}
+@media (max-width:520px){.qcard{padding:16px}}
+.qmeta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;color:var(--muted);font-size:14px;flex-wrap:wrap}
+.qmeta .sec{font-weight:500}
+.case-tag{background:var(--case-soft);color:var(--case);border-radius:6px;padding:2px 8px;font-size:12.5px;font-weight:600}
+.qtext{font-family:var(--serif);font-size:clamp(19px,2.6vw,23px);line-height:1.5;margin:0 0 20px;max-width:68ch}
+.qnum{font-family:var(--sans);font-weight:700;color:var(--accent);margin-right:8px;font-size:.85em}
+.opts{display:grid;gap:10px}
+.opt{display:flex;align-items:flex-start;gap:14px;width:100%;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:13px 16px;min-height:52px}
+.opt:hover{border-color:var(--accent)}
+.opt .k{flex:none;width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:13px;font-weight:600;color:var(--muted);font-family:var(--sans);margin-top:-1px}
+.opt .t{font-family:var(--serif);font-size:18.5px;line-height:1.4;overflow-wrap:anywhere}
+.opt[aria-checked="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.opt[aria-checked="true"] .k{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;align-items:center}
+.actions .sp{margin-left:auto}
+.flagbtn[aria-pressed="true"]{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+
+.pal{padding:16px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 74px)}
+@media (max-width:860px){.pal{position:static}}
+.pal h2{font-size:15px;margin:0 0 12px;font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(34px,1fr));gap:6px}
+.grid button{aspect-ratio:1;border:1px solid var(--line);background:var(--surface);border-radius:7px;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;position:relative;padding:0}
+.grid button.ans{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.grid button.cur{outline:2.5px solid var(--ink);outline-offset:1px}
+.grid button.flag::after{content:"";position:absolute;top:3px;right:3px;width:7px;height:7px;border-radius:50%;background:var(--warn)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;font-size:12.5px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid var(--line);vertical-align:-2px;margin-right:5px}
+.legend .l1{background:var(--accent-soft);border-color:var(--accent)}
+.legend .l2{background:var(--warn);border-color:var(--warn);border-radius:50%}
+
+.veil{position:fixed;inset:0;background:rgba(8,12,26,.55);display:none;place-items:center;z-index:50;padding:20px}
+.veil.on{display:grid}
+.modal{background:var(--surface);border-radius:14px;max-width:440px;width:100%;padding:24px;border:1px solid var(--line)}
+.modal h3{margin:0 0 8px;font-family:var(--serif);font-size:22px}
+.modal p{margin:0 0 18px;color:var(--muted)}
+.modal .row{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+
+.hero{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;padding:26px 28px;margin-bottom:20px}
+@media (max-width:640px){.hero{grid-template-columns:1fr;padding:20px}}
+.score{font-family:var(--serif);font-weight:700;line-height:1}
+.score .big{font-size:clamp(56px,10vw,84px)}
+.score .of{font-size:clamp(22px,3.5vw,30px);color:var(--muted);font-weight:400}
+.hero .pct{margin-top:8px;color:var(--muted)}
+.tally{display:flex;gap:10px;flex-wrap:wrap}
+.tally div{flex:1 1 110px;background:var(--bg);border-radius:10px;padding:12px 14px}
+.tally b{display:block;font-size:24px;font-family:var(--serif);font-variant-numeric:tabular-nums}
+.tally span{font-size:13px;color:var(--muted)}
+.tally .g b{color:var(--ok)} .tally .r b{color:var(--bad)}
+.secs{padding:20px 24px;margin-bottom:20px}
+.secs h2,.rev-h{font-family:var(--serif);font-size:22px;margin:0 0 14px}
+.srow{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,2fr) 70px;gap:14px;align-items:center;padding:8px 0;font-size:14.5px}
+@media (max-width:640px){.srow{grid-template-columns:1fr 60px}.srow .trk{grid-column:1/-1;order:3}}
+.trk{height:9px;border-radius:5px;background:var(--line);overflow:hidden}
+.trk i{display:block;height:100%;background:var(--ok)}
+.srow .n{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 6px);z-index:5;padding:8px 0;background:var(--bg)}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;font-size:14px;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.rev{padding:20px 22px;margin-bottom:14px;border-left:5px solid var(--line)}
+.rev.ok{border-left-color:var(--ok)} .rev.bad{border-left-color:var(--bad)} .rev.skip{border-left-color:var(--warn)}
+.rev .qtext{margin-bottom:14px}
+.verdict{font-size:13.5px;font-weight:600;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.verdict.ok{background:var(--ok-soft);color:var(--ok)} .verdict.bad{background:var(--bad-soft);color:var(--bad)} .verdict.skip{background:var(--warn-soft);color:var(--warn)}
+.ro{display:flex;gap:12px;align-items:flex-start;padding:9px 12px;border-radius:8px;border:1px solid var(--line);margin-bottom:7px;font-family:var(--serif);font-size:18px}
+.ro .k{flex:none;font-family:var(--sans);font-size:13px;font-weight:700;width:22px;padding-top:2px;color:var(--muted)}
+.ro .tag{margin-left:auto;font-family:var(--sans);font-size:12.5px;font-weight:600;white-space:nowrap;padding-left:8px}
+.ro.right{background:var(--ok-soft);border-color:var(--ok)} .ro.right .tag{color:var(--ok)}
+.ro.wrong{background:var(--bad-soft);border-color:var(--bad)} .ro.wrong .tag{color:var(--bad)}
+.sol{margin-top:14px;background:var(--bg);border-radius:10px;padding:14px 16px}
+.sol h4{margin:0 0 6px;font-size:14px;font-weight:600;color:var(--accent)}
+.sol div{font-family:var(--serif);font-size:18px;line-height:1.55;white-space:pre-line;overflow-wrap:anywhere}
+.empty{padding:30px;text-align:center;color:var(--muted)}
+.top-actions{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 20px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="bar" id="bar" hidden>
+  <div class="bar-in">
+    <div class="brand">Partial Derivatives · CAT-1 (Advanced)</div>
+    <div class="stat" id="st-ans"></div>
+    <div class="stat" id="st-time"></div>
+    <button class="btn primary" id="btn-submit">Submit test</button>
+  </div>
+  <div class="progress"><i id="prog"></i></div>
+</header>
+
+<main id="app"></main>
+
+<div class="veil" id="veil" role="dialog" aria-modal="true" aria-labelledby="m-title">
+  <div class="modal">
+    <h3 id="m-title">Submit your test?</h3>
+    <p id="m-body"></p>
+    <div class="row">
+      <button class="btn" id="m-cancel">Keep working</button>
+      <button class="btn primary" id="m-ok">Submit and see solutions</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- QUESTION BANK (70 Qs, harder variants, includes case studies in Errors) ---------- */
+const Q=(q,o,a,s,opt)=>({q,o,a:"abcd".indexOf(a),s,case:!!(opt&&opt.case)});
+const SECTIONS=[
+  [1,8,"Basic partial derivatives"],
+  [9,18,"Homogeneous functions and Euler's theorem"],
+  [19,24,"Tangent planes and normal lines"],
+  [25,36,"Chain rule and composite functions"],
+  [37,44,"Implicit and total derivatives"],
+  [45,56,"Total differential, errors and approximations"],
+  [57,64,"Jacobians"],
+  [65,70,"Taylor and Maclaurin series"]
+];
+const QS=[
+Q("If z = x²y³ − 4x³y + 7, find ∂²z/∂x∂y at (1, −1).",["6","18","−6","−18"],"c",
+"z_x = 2xy³ − 12x²y.\n∂/∂y(z_x) = 6xy² − 12x².\nAt (1, −1): 6(1)(1) − 12(1) = 6 − 12 = −6.\n(Taking the other order, z_y = 3x²y² − 4x³, and ∂/∂x gives the same −6, confirming the mixed partials are equal here.)"),
+Q("If z = eˣ sin(xy), find ∂z/∂x at (0, π/2).",["1","0","π","π/2"],"d",
+"By the product rule, ∂z/∂x = eˣ sin(xy) + eˣ·y·cos(xy) = eˣ[sin(xy) + y cos(xy)].\nAt (0, π/2): e⁰[sin 0 + (π/2)cos 0] = 1·[0 + π/2] = π/2.\nForgetting the product-rule term for cos(xy) gives the trap answer 0."),
+Q("If u = xʸ (x > 0), find ∂u/∂x at (e, 2).",["e²","2e","e","2e²"],"b",
+"∂u/∂x = y·x^(y−1) (treat y as a constant power).\nAt (e, 2): 2·e^(2−1) = 2e.\n(The trap e² comes from differentiating as if x were the exponent instead of the base.)"),
+Q("If z = ln(x² + y²), find z_xx + z_yy.",["2/(x² + y²)","4/(x² + y²)","1","0"],"d",
+"z_x = 2x/(x² + y²) → z_xx = [2(x² + y²) − 2x(2x)]/(x² + y²)² = (2y² − 2x²)/(x² + y²)².\nBy symmetry z_yy = (2x² − 2y²)/(x² + y²)².\nAdding: z_xx + z_yy = 0. (ln(x² + y²) is harmonic away from the origin.)"),
+Q("If f(x, y) = x³y − xy³, find f_xy at (2, 1).",["12","6","3","9"],"d",
+"f_x = 3x²y − y³.\nf_xy = ∂/∂y(3x²y − y³) = 3x² − 3y².\nAt (2, 1): 3(4) − 3(1) = 12 − 3 = 9."),
+Q("If z = sin(x²y), find ∂z/∂y at (√π, 1).",["0","π","−1","−π"],"d",
+"∂z/∂y = x²cos(x²y).\nAt x = √π, y = 1: x² = π, and x²y = π, so cos(π) = −1.\n∂z/∂y = π·(−1) = −π."),
+Q("If z = x³y², find z_xxy (differentiate twice with respect to x, once with respect to y) at (1, 2).",["12","36","6","24"],"d",
+"z_x = 3x²y².\nz_xx = 6xy².\nz_xxy = ∂/∂y(6xy²) = 12xy.\nAt (1, 2): 12(1)(2) = 24."),
+Q("For a function f(x, y) whose mixed partial derivatives fxy and fyx are both continuous in a region, Clairaut's theorem guarantees:",["fxy = 0 everywhere","fx = fy everywhere","f is homogeneous","fxy = fyx throughout that region"],"d",
+"Clairaut's (Schwarz's) theorem: if fxy and fyx exist and are continuous near a point, they are equal there. Continuity of the mixed partials is the key condition — without it, equality can fail."),
+Q("If u = x⁴ + x³y − 2xy³ + y⁴, find x²uxx + 2xy uxy + y²uyy in terms of u.",["8u","16u","20u","12u"],"d",
+"Every term of u has total degree 4, so u is homogeneous of degree n = 4.\nBy Euler's second-order identity, x²uxx + 2xy uxy + y²uyy = n(n − 1)u = 4(3)u = 12u."),
+Q("If u = (x³ + y³)/(x − y), find x·ux + y·uy in terms of u.",["3u","2u","4u","u"],"b",
+"Numerator has degree 3, denominator has degree 1, so u is homogeneous of degree 3 − 1 = 2.\nBy Euler's theorem, x·ux + y·uy = 2u."),
+Q("If u = x² ln(y/x), find x·ux + y·uy.",["3u","2u","0","u"],"b",
+"Replace x → tx, y → ty: (tx)² ln(ty/tx) = t²x² ln(y/x) = t²u, so u is homogeneous of degree 2 even though a logarithm is present (the ratio y/x is scale-invariant).\nBy Euler's theorem, x·ux + y·uy = 2u."),
+Q("Is u = e^(y/x) + x sin(y/x) a homogeneous function of x and y?",["Yes, of degree 2","Yes, of degree 1","No — its two terms have different degrees (0 and 1)","Yes, of degree 0"],"c",
+"Scaling x → tx, y → ty: e^(y/x) is unchanged (degree 0), while x sin(y/x) scales as t·x sin(y/x) (degree 1).\nSince the two terms scale differently, their sum does not scale as tⁿu for any single n, so u is not homogeneous."),
+Q("u is homogeneous of degree n. Given x·ux + y·uy = 5u and x²uxx + 2xy uxy + y²uyy = 20u, find n.",["4","5","20","6"],"b",
+"The first relation directly gives n = 5 (Euler's first-order theorem).\nCheck with the second-order identity: n(n − 1)u = 5(4)u = 20u ✓, consistent with n = 5."),
+Q("If u = xⁿf(y/x) for a differentiable f, and it is known that x·ux + y·uy = 7u for all such f, what is n?",["8","5","7","6"],"c",
+"u = xⁿf(y/x) is always homogeneous of degree n, so by Euler's theorem x·ux + y·uy = n·u.\nMatching with 7u gives n = 7."),
+Q("z = f(x, y) satisfies x·zx + y·zy = 5z everywhere, and z(2, 3) = 40. Find 2·zx(2, 3) + 3·zy(2, 3).",["100","200","150","40"],"b",
+"Euler's relation at (2, 3): 2·zx(2,3) + 3·zy(2,3) = 5·z(2,3) = 5 × 40 = 200."),
+Q("If u = √(x⁴ + y⁴)/(x + y), find x·ux + y·uy in terms of u.",["2u","0","u/2","u"],"d",
+"√(x⁴ + y⁴) is homogeneous of degree 2 (since x⁴+y⁴ has degree 4, and the square root halves it), and (x + y) has degree 1, so u has degree 2 − 1 = 1.\nBy Euler's theorem with n = 1: x·ux + y·uy = 1·u = u (not 0 — a common slip is to assume degree-1 functions give zero)."),
+Q("u = f(x, y) is homogeneous of degree 3, and v = u². Find x·vx + y·vy in terms of v.",["3v","5v","9v","6v"],"d",
+"v = u² scales as (tⁿu)² = t^(2n)u² under x → tx, y → ty, so v is homogeneous of degree 2n = 6.\nBy Euler's theorem, x·vx + y·vy = 6v."),
+Q("If u = x³ + y³ + z³ − 3xyz and u = 10 at a certain point, find x·ux + y·uy + z·uz at that point.",["30","20","10","90"],"a",
+"u is homogeneous of degree 3 in three variables.\nEuler's theorem (three-variable form): x·ux + y·uy + z·uz = 3u = 3 × 10 = 30."),
+Q("Find the point on z = x² + y² at which the tangent plane is parallel to the plane 2x + 4y − z = 0.",["(2, 1, 5)","(1, 1, 2)","(1, 2, 5)","(2, 4, 20)"],"c",
+"F = x² + y² − z, so ∇F = (2x, 2y, −1), which must be proportional to (2, 4, −1).\nMatching the last components fixes the scale factor at 1, so 2x = 2 → x = 1 and 2y = 4 → y = 2.\nThen z = x² + y² = 1 + 4 = 5, giving (1, 2, 5)."),
+Q("Find the tangent plane to the surface xyz = 6 at the point where x = 1, y = 2 (and z is found from the surface).",["6x + 3y + 2z = 18","6x + 3y + 2z = 6","3x + 6y + 2z = 18","2x + 3y + 6z = 18"],"a",
+"z = 6/(xy) = 6/2 = 3, so the point is (1, 2, 3).\n∇F = (yz, xz, xy) = (6, 3, 2).\nPlane: 6(x−1) + 3(y−2) + 2(z−3) = 0 → 6x + 3y + 2z = 6 + 6 + 6 = 18."),
+Q("For what positive value of a is the plane x + y + z = a tangent to the sphere x² + y² + z² = 3?",["√3","3","3√3","9"],"b",
+"A plane x+y+z=a is tangent to a sphere centred at the origin when the distance from the origin equals the radius: a/√(1²+1²+1²) = √3 → a/√3 = √3 → a = 3."),
+Q("Find the direction ratios of the normal line to the surface z = xy at the point (2, 3, 6).",["(3, 2, −1)","(2, 3, −1)","(3, 2, 1)","(6, 6, −1)"],"a",
+"F = xy − z, ∇F = (y, x, −1). At (2, 3, 6): (3, 2, −1)."),
+Q("At which point on the surface z = x² + y² is the tangent plane horizontal (parallel to the xy-plane)?",["(1, 1, 2)","(1, 0, 1)","(0, 1, 1)","(0, 0, 0)"],"d",
+"∇F = (2x, 2y, −1) must be proportional to (0, 0, −1), which forces 2x = 0 and 2y = 0, i.e. x = 0, y = 0.\nOnly the vertex (0, 0, 0) has a horizontal tangent plane."),
+Q("The point (1, 1, 1) lies on x² + 2y² + 3z² = 6. Find the direction cosine of the normal line along the z-axis.",["1/√14","√3/√14","3/√14","3/14"],"c",
+"∇F = (2x, 4y, 6z) = (2, 4, 6) at (1, 1, 1), simplifying to direction ratios (1, 2, 3).\nMagnitude = √(1+4+9) = √14.\nDirection cosine along z: 3/√14."),
+Q("If z = f(x, y), x = uv, y = u/v, find ∂z/∂v.",["u·zx − (u/v²)·zy","v·zx + (u/v²)·zy","v·zx − (1/v²)·zy","u·zx + (u/v²)·zy"],"a",
+"∂x/∂v = u, ∂y/∂v = −u/v².\n∂z/∂v = zx·(∂x/∂v) + zy·(∂y/∂v) = u·zx − (u/v²)·zy."),
+Q("If z = x² + xy + y², where x = eᵗcos t, y = eᵗsin t, find dz/dt at t = 0.",["3","5","2","4"],"a",
+"At t = 0: x = 1, y = 0. dx/dt = eᵗ(cos t − sin t) → 1 at t=0. dy/dt = eᵗ(sin t + cos t) → 1 at t=0.\nzx = 2x + y = 2, zy = x + 2y = 1 at (1, 0).\ndz/dt = 2(1) + 1(1) = 3."),
+Q("If w = x² + y² + z², x = t, y = t², z = t³, find d²w/dt² at t = 1.",["42","40","46","44"],"d",
+"dw/dt = 2t + 4t³ + 6t⁵.\nd²w/dt² = 2 + 12t² + 30t⁴.\nAt t = 1: 2 + 12 + 30 = 44."),
+Q("If u = f(x, y), x = r² − s², y = 2rs, find ∂u/∂r.",["2s·ux + 2r·uy","2r·ux + 2s·uy","r·ux + s·uy","2r·ux − 2s·uy"],"b",
+"∂x/∂r = 2r, ∂y/∂r = 2s.\n∂u/∂r = ux·(2r) + uy·(2s) = 2r·ux + 2s·uy."),
+Q("If z is defined implicitly by x² + y² + z² = 3xyz, find ∂z/∂x.",["(2x − 3yz)/(2z − 3xy)","(2x + 3yz)/(3xy − 2z)","(3yz + 2x)/(2z + 3xy)","(3yz − 2x)/(2z − 3xy)"],"d",
+"F = x² + y² + z² − 3xyz. F_x = 2x − 3yz. F_z = 2z − 3xy.\n∂z/∂x = −F_x/F_z = −(2x − 3yz)/(2z − 3xy) = (3yz − 2x)/(2z − 3xy)."),
+Q("For a wave u = f(x − ct), what is ∂²u/∂t² in terms of ∂²u/∂x²?",["−c·ux","c²·uxx","c·uxx","−c²·uxx"],"b",
+"Let ξ = x − ct. ∂u/∂t = f′(ξ)·(−c) = −c·ux (since ux = f′(ξ)).\n∂²u/∂t² = −c·∂(ux)/∂t = −c·[f″(ξ)·(−c)] = c²f″(ξ) = c²·uxx."),
+Q("z = f(x, y), x = g(s, t), y = h(s, t). Which of the following is the INCORRECT expression for ∂z/∂t?",["∂z/∂t = zx·(∂y/∂t) + zy·(∂x/∂t)","∂z/∂t depends on both ∂x/∂t and ∂y/∂t (in general)","∂z/∂t = zx·(∂x/∂t) + zy·(∂y/∂t)","∂z/∂t is a sum of two chain-rule terms"],"a",
+"The correct chain rule pairs each partial of z with the derivative of its OWN intermediate variable: zx goes with ∂x/∂t, and zy goes with ∂y/∂t. Swapping them, as in option (a), is incorrect."),
+Q("If z = f(x, y), x = s + t, y = s − t, express zss + ztt in terms of zxx, zxy, zyy.",["2zxy","zxx + zyy","4zxx","2(zxx + zyy)"],"d",
+"zs = zx + zy → zss = zxx + 2zxy + zyy.\nzt = zx − zy → ztt = zxx − 2zxy + zyy.\nAdding: zss + ztt = 2zxx + 2zyy = 2(zxx + zyy). (The cross terms cancel.)"),
+Q("If u = f(x, y), x = eˢcos t, y = eˢsin t, then uss + utt equals:",["eˢ(uxx + uyy)","uxx + uyy","(x² + y²)(uxx + uyy)","(x + y)(uxx + uyy)"],"c",
+"This is the classic conformal-map Laplacian identity: with x = eˢcos t, y = eˢsin t, one finds uss + utt = e^(2s)(uxx + uyy). Since e^(2s) = x² + y², this equals (x² + y²)(uxx + uyy)."),
+Q("If u = f(x, y, z), and x, y, z are each functions of p and q, how many chain-rule terms does ∂u/∂p contain?",["6","3","4","2"],"b",
+"∂u/∂p = ux·(∂x/∂p) + uy·(∂y/∂p) + uz·(∂z/∂p) — one term for each of the three intermediate variables x, y, z."),
+Q("If z = f(u) where u = x² + y² (z depends on x, y only through u), which identity always holds?",["y·zx = −x·zy","y·zx = x·zy","zx = zy","x·zx = y·zy"],"b",
+"zx = f′(u)·2x, zy = f′(u)·2y.\ny·zx = 2xy·f′(u) and x·zy = 2xy·f′(u) — these are equal, so y·zx = x·zy."),
+Q("If w = f(x, y), x = r cosθ, y = r sinθ, express wx² + wy² in terms of wr and wθ.",["wr² + (1/r²)wθ²","(1/r²)(wr² + wθ²)","wr² − (1/r²)wθ²","wr² + wθ²"],"a",
+"This is the standard polar gradient-magnitude identity: |∇w|² = wx² + wy² = wr² + (1/r²)wθ²."),
+Q("If xʸ + yˣ = 10 defines y implicitly as a function of x, which expression gives dy/dx?",["−[y·xʸ⁻¹ + yˣln y] / [xʸln x + x·yˣ⁻¹]","−[y·xʸ⁻¹ − yˣln y] / [xʸln x − x·yˣ⁻¹]","−[xʸln x + x·yˣ⁻¹] / [y·xʸ⁻¹ + yˣln y]","[y·xʸ⁻¹ + yˣln y] / [xʸln x + x·yˣ⁻¹]"],"a",
+"Differentiate xʸ using logarithmic differentiation: d/dx(xʸ) = xʸ(y/x + y′ln x).\nDifferentiate yˣ similarly: d/dx(yˣ) = yˣ(ln y + x·y′/y).\nSetting the sum of derivatives to 0 and solving for y′ gives\ny′ = −[y·xʸ⁻¹ + yˣln y] / [xʸln x + x·yˣ⁻¹]."),
+Q("If x²y + y²z + z²x = k defines z implicitly as a function of x and y, find ∂z/∂x.",["(2xy + z²)/(y² + 2zx)","−(2xy − z²)/(y² − 2zx)","−(2xy + z²)/(y² + 2zx)","(y² + 2zx)/(2xy + z²)"],"c",
+"F = x²y + y²z + z²x − k. F_x = 2xy + z². F_z = y² + 2zx.\n∂z/∂x = −F_x/F_z = −(2xy + z²)/(y² + 2zx)."),
+Q("If x = cos t, y = sin t, and z = x² + y², find dz/dt.",["2","−1","1","0"],"d",
+"Since x² + y² = cos²t + sin²t = 1 for all t, z is constant, so dz/dt = 0.\n(Direct check: dz/dt = 2x(−sin t) + 2y(cos t) = −2sin t cos t + 2sin t cos t = 0.)"),
+Q("If y is defined implicitly by e^(xy) = x + y, find dy/dx at the point (0, 1).",["undefined","−1","0","1"],"c",
+"Check the point: e⁰ = 1 = 0 + 1 ✓. F = e^(xy) − x − y.\nF_x = y·e^(xy) − 1; at (0,1): 1(1) − 1 = 0.\nF_y = x·e^(xy) − 1; at (0,1): 0(1) − 1 = −1.\ndy/dx = −F_x/F_y = −0/(−1) = 0."),
+Q("z = xy + x²/y, and y(x) satisfies xy² = 1. Find the total derivative dz/dx at x = 1 (where y = 1).",["3.5","2","2.5","3"],"d",
+"From xy² = 1: differentiate to get y² + 2xy·y′ = 0 → y′ = −y/(2x). At (1,1): y′ = −1/2.\nzx = y + 2x/y; at (1,1): 1 + 2 = 3. zy = x − x²/y²; at (1,1): 1 − 1 = 0.\ndz/dx = zx + zy·y′ = 3 + 0(−1/2) = 3."),
+Q("At a point, F_x = 2, F_y = −3, F_z = 6 for a surface F(x,y,z)=0 defining z=z(x,y). Find ∂z/∂x + ∂z/∂y.",["7/6","1/6","−1/6","5/6"],"b",
+"∂z/∂x = −Fx/Fz = −2/6 = −1/3.\n∂z/∂y = −Fy/Fz = −(−3)/6 = 1/2.\nSum = −1/3 + 1/2 = 1/6."),
+Q("If xy + yz + zx = 1 defines z implicitly, find ∂z/∂x at the point (1, 0, 1).",["−1","1","0","2"],"a",
+"Check the point: (1)(0) + (0)(1) + (1)(1) = 1 ✓. F = xy + yz + zx − 1.\nF_x = y + z = 0 + 1 = 1. F_z = y + x = 0 + 1 = 1.\n∂z/∂x = −F_x/F_z = −1/1 = −1."),
+Q("For a curve F(x, y) = 0, the condition for a horizontal tangent (dy/dx = 0) at a point is:",["F_x = F_y","F_y = 0 (with F_x ≠ 0)","F_x = 0 (with F_y ≠ 0)","F_x = F_y = 0"],"c",
+"dy/dx = −F_x/F_y. This is zero exactly when F_x = 0, provided F_y ≠ 0 so the expression is defined (a horizontal, not undefined, tangent)."),
+Q("If u = x²y³, x changes from 2 to 2.01 and y changes from 3 to 2.98, use the total differential to estimate the change in u.",["1.08","−1.08","−2.16","3.24"],"b",
+"du = 2xy³dx + 3x²y²dy.\nAt (2,3): 2xy³ = 2(2)(27) = 108, dx = 0.01 → term = 1.08.\n3x²y² = 3(4)(9) = 108, dy = −0.02 → term = −2.16.\ndu ≈ 1.08 − 2.16 = −1.08."),
+Q("If w = xyz², and the percentage errors in x, y, z are 1%, 2%, 3% respectively, find the maximum percentage error in w.",["7%","9%","5%","6%"],"b",
+"log w = log x + log y + 2 log z → δw/w = δx/x + δy/y + 2(δz/z).\nMaximum error = 1% + 2% + 2(3%) = 1 + 2 + 6 = 9%."),
+Q("If u = x²y/z³, with percentage errors 2% in x, 1% in y, and 1% in z, find the maximum percentage error in u.",["5%","7%","6%","8%"],"d",
+"log u = 2log x + log y − 3log z → δu/u = 2(δx/x) + δy/y + 3(δz/z).\nMaximum error = 2(2%) + 1% + 3(1%) = 4 + 1 + 3 = 8%."),
+Q("P = x − y, where x = 10 ± 0.1 and y = 8 ± 0.1 (absolute errors). Find the percentage error in P.",["2%","10%","20%","1%"],"b",
+"For a difference, absolute errors add: δP = δx + δy = 0.1 + 0.1 = 0.2.\nP = 10 − 8 = 2.\nPercentage error = (0.2/2) × 100 = 10%.\n(Note: percentage errors of x and y cannot simply be combined here — only absolute errors add for a sum or difference.)"),
+Q("The relative (percentage) error of a quantity can be found by simply adding the relative errors of its factors — with appropriate multiples for powers — only when the quantity is a:",["Sum of the measured variables","None of these — it never works this way","Difference of the measured variables","Product or quotient of powers of the measured variables"],"d",
+"The log-differentiation shortcut (percentage errors add, weighted by exponents) applies specifically to expressions of the form xᵃyᵇ/zᶜ — products and quotients of powers. Sums and differences require working with absolute errors directly."),
+Q("The side of a cube is measured with a 2% error. Find the percentage error in the calculated surface area (SA = 6a²).",["2%","4%","6%","8%"],"b",
+"SA ∝ a² → δ(SA)/SA = 2(δa/a) = 2 × 2% = 4%."),
+Q("Case study: A cylindrical container has radius r = 5 cm and height h = 10 cm, each measured with a possible error of 0.1 cm. The volume is V = πr²h. Estimate the percentage error in the computed volume.",["6%","2.5%","4%","5%"],"d",
+"δV/V = 2(δr/r) + δh/h = 2(0.1/5) + (0.1/10) = 2(0.02) + 0.01 = 0.04 + 0.01 = 0.05 = 5%.",{case:true}),
+Q("Case study: A surveyor measures the two legs of a right triangle as a = 6 m and b = 8 m to compute the hypotenuse c = √(a² + b²) for a fencing job. Each leg is measured with an error of ±0.05 m. Find the approximate absolute error in the computed hypotenuse.",["0.14 m","0.1 m","0.07 m","0.05 m"],"c",
+"c = √(a²+b²) = 10 m. dc = (a·da + b·db)/c = [6(0.05) + 8(0.05)]/10 = (0.3 + 0.4)/10 = 0.07 m.",{case:true}),
+Q("Case study: A component's resistance is computed from Ohm's law R = V/I, with V = 20 V (2% error) and I = 4 A (1% error). Find the percentage error in R, and compare it with the error in V alone.",["1%, less than the error in V alone","2%, equal to the error in V alone","3%, greater than the error in V alone","3%, less than the error in V alone"],"c",
+"δR/R = δV/V + δI/I = 2% + 1% = 3%, which is greater than the 2% error in V by itself — the errors in the numerator and denominator both add to the total.",{case:true}),
+Q("Case study: A pendulum's period is T = 2π√(L/g). A student first estimates the percentage error in T from a 3% error in L alone (treating g as exact), then recalculates after learning g also has a 1% error. By how many percentage points does her error estimate for T increase?",["1","0.5","2","1.5"],"b",
+"Without g's error: δT/T = (1/2)(3%) = 1.5%.\nWith g's error included: δT/T = (1/2)(3%) + (1/2)(1%) = 1.5% + 0.5% = 2%.\nIncrease = 2% − 1.5% = 0.5 percentage points.",{case:true}),
+Q("Case study: A rectangular sheet has length l = 25 cm (error +2%) and breadth b = 16 cm (error −1%, i.e. opposite sign to the length's error). Using the maximum-error formula for A = lb, what is the maximum possible percentage error in the computed area?",["2%","0%","1%","3%"],"d",
+"The maximum-error formula for a product adds the MAGNITUDES of the relative errors, regardless of their signs: δA/A(max) = |δl/l| + |δb/b| = 2% + 1% = 3%. Subtracting the signed errors (getting 1%) is the classic mistake here — the worst case assumes the errors could work against you.",{case:true}),
+Q("Case study: A technician measures a metal ball's mass m = 200 g (0.5% error) and diameter d = 4 cm (1% error), then computes density ρ = m/V with V = (4/3)π(d/2)³. Which measurement contributes more to the error in ρ, and what is the total percentage error?",["Diameter; total error 3.5%","Mass; total error 3.5%","Diameter; total error 1.5%","Mass; total error 1.0%"],"a",
+"V ∝ d³, so a 1% error in d contributes 3 × 1% = 3% to δV/V, and hence to δρ/ρ (since ρ = m/V). Mass contributes only 0.5%.\nTotal error: δρ/ρ = δm/m + 3(δd/d) = 0.5% + 3% = 3.5%. The diameter's error dominates because it enters cubed.",{case:true}),
+Q("If u = x + y + z, v = x − y, w = y − z, find ∂(u,v,w)/∂(x,y,z).",["3","−3","0","1"],"a",
+"Jacobian matrix:\n[1  1  1]\n[1 −1  0]\n[0  1 −1]\nExpanding along the first row: 1[(−1)(−1)−0(1)] − 1[(1)(−1)−0(0)] + 1[(1)(1)−(−1)(0)] = 1(1) − 1(−1) + 1(1) = 1+1+1 = 3."),
+Q("u = x + y, v = x² + 2xy + y² (note v = u²). Find ∂(u,v)/∂(x,y).",["2(x+y)","0","4(x+y)","(x+y)²"],"b",
+"ux = 1, uy = 1. vx = 2x+2y, vy = 2x+2y.\nJ = 1(2x+2y) − 1(2x+2y) = 0. This is expected: since v = u², u and v are functionally dependent, and a functional relation forces the Jacobian to vanish."),
+Q("Given ∂(u,v)/∂(r,s) = 6 and ∂(r,s)/∂(x,y) = 1/3, find ∂(u,v)/∂(x,y).",["1/2","18","9","2"],"d",
+"Chain rule for Jacobians: ∂(u,v)/∂(x,y) = ∂(u,v)/∂(r,s) · ∂(r,s)/∂(x,y) = 6 × (1/3) = 2."),
+Q("Given ∂(x,y)/∂(r,θ) = r, find ∂(r,θ)/∂(x,y) at r = 5.",["1/25","1/5","25","5"],"b",
+"By the reciprocal property, ∂(r,θ)/∂(x,y) = 1/[∂(x,y)/∂(r,θ)] = 1/r.\nAt r = 5: 1/5."),
+Q("If u = eˣcos y, v = eˣsin y, find ∂(u,v)/∂(x,y).",["2e^(2x)","e^(2x)","eˣ","e^(2x)cos 2y"],"b",
+"ux = eˣcos y, uy = −eˣsin y, vx = eˣsin y, vy = eˣcos y.\nJ = (eˣcos y)(eˣcos y) − (−eˣsin y)(eˣsin y) = e^(2x)cos²y + e^(2x)sin²y = e^(2x).\n(Notice y drops out entirely — a hallmark of this Cauchy–Riemann-style pair.)"),
+Q("If u = xy, v = x/y (x, y > 0), find ∂(u,v)/∂(x,y).",["0","−2x/y","2x/y","−x/y"],"b",
+"ux = y, uy = x, vx = 1/y, vy = −x/y².\nJ = y(−x/y²) − x(1/y) = −x/y − x/y = −2x/y."),
+Q("If ∂(x,y,z)/∂(u,v,w) = 8, and p = 2u, q = 3v, r = 4w, find ∂(x,y,z)/∂(p,q,r).",["1/3","24","3","192"],"a",
+"∂(u,v,w)/∂(p,q,r): since u=p/2, v=q/3, w=r/4, this Jacobian is (1/2)(1/3)(1/4) = 1/24.\n∂(x,y,z)/∂(p,q,r) = ∂(x,y,z)/∂(u,v,w) · ∂(u,v,w)/∂(p,q,r) = 8 × 1/24 = 1/3."),
+Q("If ∂(u,v)/∂(x,y) ≠ 0 at a point, the Inverse/Implicit Function Theorem guarantees that near that point:",["x and y can be locally solved for in terms of u and v (the map is locally invertible)","u and v must be homogeneous","u equals v everywhere nearby","x and y are constant"],"a",
+"A nonzero Jacobian at a point is exactly the condition under which the inverse function theorem applies: the transformation (x,y) → (u,v) is locally invertible near that point, so x, y can be recovered as functions of u, v."),
+Q("Find the coefficient of x³ in the Maclaurin expansion of f(x) = ln(1 + x).",["−1/2","−1/3","1/6","1/3"],"d",
+"ln(1+x) = x − x²/2 + x³/3 − x⁴/4 + …\nThe coefficient of x³ is +1/3."),
+Q("Find the coefficient of x³ in the Maclaurin expansion of f(x) = eˣ sin x (multiply the two series).",["−1/3","1/6","1/3","2/3"],"c",
+"eˣ = 1 + x + x²/2 + x³/6 + …, sin x = x − x³/6 + …\nMultiplying and collecting the x³ terms: from (1)(−x³/6) and (x²/2)(x): −1/6 + 1/2 = 1/3.\nSo eˣsin x ≈ x + x² + x³/3 + …, giving coefficient 1/3."),
+Q("Using a first-order Taylor expansion of f(x) = √x about a = 4, estimate √4.1.",["2.025","1.975","2.05","2.1"],"a",
+"f(4) = 2, f′(x) = 1/(2√x) → f′(4) = 1/4.\n√4.1 ≈ f(4) + f′(4)(0.1) = 2 + (0.1)(0.25) = 2.025."),
+Q("Expand f(x,y) = x²y about (1,1) to first order, and use it to estimate f(1.1, 0.9).",["1.2","1.089 (the exact value)","1.0","1.1"],"d",
+"f(1,1) = 1. fx = 2xy → 2 at (1,1). fy = x² → 1 at (1,1).\nFirst-order estimate: f ≈ 1 + 2(0.1) + 1(−0.1) = 1 + 0.2 − 0.1 = 1.1.\n(The exact value, (1.1)²(0.9) = 1.089, is close but not what the linear approximation gives — that is the point of a first-order estimate.)"),
+Q("In the Maclaurin series of f(x) = cos x, the signs of the successive nonzero coefficients (for x⁰, x², x⁴, x⁶, …) follow the pattern:",["always negative","always positive","+, −, +, −, … (alternating, starting positive)","+, +, −, −, … (pairs)"],"c",
+"cos x = 1 − x²/2! + x⁴/4! − x⁶/6! + …\nThe nonzero coefficients alternate in sign, starting with a positive constant term."),
+Q("The Maclaurin series 1 + x + x² + x³ + … represents f(x) = 1/(1 − x) only for which values of x?",["|x| > 1","all real x","x < 0","|x| < 1"],"d",
+"The geometric series 1 + x + x² + … converges to 1/(1−x) only when |x| < 1; outside this interval the series diverges even though the closed-form function 1/(1−x) is defined for all x ≠ 1.")
+];
+
+/* ---------- STATE ---------- */
+const N=QS.length, MARKS=2, KEY="pd_mcq_test_v2";
+let S={idx:0,ans:Array(N).fill(null),flag:Array(N).fill(false),submitted:false,elapsed:0,started:false,filter:"all"};
+let tick=null,last=0;
+function load(){try{const r=localStorage.getItem(KEY);if(r){const d=JSON.parse(r);if(d&&d.ans&&d.ans.length===N)S=Object.assign(S,d);}}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+const $=s=>document.querySelector(s);
+const esc=t=>String(t).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const secOf=i=>{const n=i+1;return SECTIONS.find(s=>n>=s[0]&&n<=s[1]);};
+const isRight=i=>S.ans[i]!==null&&S.ans[i]===QS[i].a;
+const fmt=s=>{const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=Math.floor(s%60);return (h?h+":"+String(m).padStart(2,"0"):m)+":"+String(x).padStart(2,"0");};
+const answered=()=>S.ans.filter(a=>a!==null).length;
+
+/* ---------- TIMER ---------- */
+function startTimer(){stopTimer();last=Date.now();tick=setInterval(()=>{const n=Date.now();S.elapsed+=(n-last)/1000;last=n;$("#st-time").innerHTML="Time <b>"+fmt(S.elapsed)+"</b>";if(Math.floor(S.elapsed)%10===0)save();},1000);}
+function stopTimer(){if(tick){clearInterval(tick);tick=null;}}
+
+/* ---------- START ---------- */
+function renderStart(){
+  $("#bar").hidden=true;stopTimer();
+  const resume=S.started&&!S.submitted&&answered()>0;
+  const caseCount=QS.filter(q=>q.case).length;
+  $("#app").innerHTML=`
+  <section class="start">
+    <span class="badge">Advanced edition · ${caseCount} case-study questions</span>
+    <h1>Partial Derivatives mock test</h1>
+    <p class="sub">Linear Algebra and Calculus · Course Code 25APS0101 · CAT-1 question bank</p>
+    <div class="rules">
+      <div><span>Questions</span><b>${N} multiple choice</b></div>
+      <div><span>Marks per question</span><b>${MARKS}</b></div>
+      <div><span>Total marks</span><b>${N*MARKS}</b></div>
+      <div><span>Case-study questions</span><b>${caseCount}, in Errors and approximations</b></div>
+      <div><span>Negative marking</span><b>None</b></div>
+      <div><span>Time limit</span><b>None (a timer tracks your pace)</b></div>
+      <div><span>Solutions</span><b>Full step-by-step, after you submit</b></div>
+    </div>
+    <p class="topics">Trickier variants throughout: multi-step chain rule, Euler's theorem with disguised or non-homogeneous forms, functional dependence in Jacobians, and real-world case studies on propagated error. Covers basic partial derivatives, Euler's theorem, tangent planes and normals, chain rule, implicit and total derivatives, errors and approximations, Jacobians, and Taylor/Maclaurin series.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn primary" id="go">${resume?"Resume test":"Start test"}</button>
+      ${resume?'<button class="btn" id="fresh">Start over</button>':""}
+    </div>
+  </section>`;
+  $("#go").onclick=()=>{S.started=true;if(!resume){S.idx=0;}renderTest();};
+  const f=$("#fresh");if(f)f.onclick=()=>{reset();S.started=true;renderTest();};
+}
+function reset(){S={idx:0,ans:Array(N).fill(null),flag:Array(N).fill(false),submitted:false,elapsed:0,started:false,filter:"all"};save();}
+
+/* ---------- TEST ---------- */
+function renderTest(){
+  $("#bar").hidden=false;
+  const q=QS[S.idx],sec=secOf(S.idx),L="abcd";
+  $("#app").innerHTML=`
+  <div class="test">
+    <section class="card qcard" aria-live="polite">
+      <div class="qmeta"><span class="sec">${esc(sec[2])}</span>${q.case?'<span class="case-tag">Case study</span>':""}<span>${MARKS} marks</span></div>
+      <p class="qtext"><span class="qnum">Q${S.idx+1}.</span>${esc(q.q)}</p>
+      <div class="opts" role="radiogroup" aria-label="Answer options">
+        ${q.o.map((t,i)=>`<button class="opt" role="radio" aria-checked="${S.ans[S.idx]===i}" data-i="${i}"><span class="k">${L[i]}</span><span class="t">${esc(t)}</span></button>`).join("")}
+      </div>
+      <div class="actions">
+        <button class="btn" id="prev" ${S.idx===0?"disabled":""}>Previous</button>
+        <button class="btn primary" id="next" ${S.idx===N-1?"disabled":""}>Next</button>
+        <button class="btn flagbtn" id="flag" aria-pressed="${S.flag[S.idx]}">${S.flag[S.idx]?"Marked for review":"Mark for review"}</button>
+        <button class="btn ghost sp" id="clear" ${S.ans[S.idx]===null?"disabled":""}>Clear answer</button>
+      </div>
+    </section>
+    <aside class="card pal">
+      <h2>Question palette</h2>
+      <div class="grid">${QS.map((_,i)=>`<button data-j="${i}" class="${S.ans[i]!==null?"ans ":""}${i===S.idx?"cur ":""}${S.flag[i]?"flag":""}" aria-label="Question ${i+1}${S.ans[i]!==null?", answered":""}${S.flag[i]?", marked":""}">${i+1}</button>`).join("")}</div>
+      <div class="legend"><span><i class="l1"></i>Answered</span><span><i class="l2"></i>Marked</span></div>
+    </aside>
+  </div>`;
+  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>pick(+b.dataset.i));
+  document.querySelectorAll(".grid button").forEach(b=>b.onclick=()=>go(+b.dataset.j));
+  $("#prev").onclick=()=>go(S.idx-1);$("#next").onclick=()=>go(S.idx+1);
+  $("#flag").onclick=()=>{S.flag[S.idx]=!S.flag[S.idx];save();renderTest();};
+  $("#clear").onclick=()=>{S.ans[S.idx]=null;save();renderTest();};
+  updateBar();
+}
+function updateBar(){
+  const a=answered();
+  $("#st-ans").innerHTML="Answered <b>"+a+"/"+N+"</b>";
+  $("#st-time").innerHTML="Time <b>"+fmt(S.elapsed)+"</b>";
+  $("#prog").style.width=(a/N*100)+"%";
+}
+function pick(i){S.ans[S.idx]=i;save();renderTest();}
+function go(j){if(j<0||j>=N)return;S.idx=j;save();renderTest();window.scrollTo({top:0});}
+
+/* ---------- SUBMIT ---------- */
+function askSubmit(){
+  const un=N-answered(),fl=S.flag.filter(Boolean).length;
+  $("#m-body").textContent=(un?un+" question"+(un>1?"s are":" is")+" unanswered. ":"You have answered every question. ")+(fl?fl+" marked for review. ":"")+"After submitting you can't change your answers, but you can retake the test.";
+  $("#veil").classList.add("on");$("#m-ok").focus();
+}
+function closeModal(){$("#veil").classList.remove("on");}
+function submit(){closeModal();S.submitted=true;stopTimer();S.filter="all";save();renderResults();window.scrollTo({top:0});}
+
+/* ---------- RESULTS ---------- */
+function renderResults(){
+  $("#bar").hidden=true;
+  let ok=0,bad=0,skip=0;
+  const per=SECTIONS.map(s=>({name:s[2],from:s[0],to:s[1],ok:0,tot:s[1]-s[0]+1}));
+  QS.forEach((q,i)=>{
+    const r=isRight(i);
+    if(S.ans[i]===null)skip++;else if(r)ok++;else bad++;
+    if(r){const p=per.find(p=>i+1>=p.from&&i+1<=p.to);p.ok++;}
+  });
+  const score=ok*MARKS,total=N*MARKS,pct=Math.round(score/total*1000)/10;
+  $("#app").innerHTML=`
+  <section class="card hero">
+    <div class="score"><span class="big">${score}</span><span class="of"> / ${total}</span><div class="pct">${pct}% · ${fmt(S.elapsed)} taken</div></div>
+    <div class="tally">
+      <div class="g"><b>${ok}</b><span>Correct</span></div>
+      <div class="r"><b>${bad}</b><span>Incorrect</span></div>
+      <div><b>${skip}</b><span>Skipped</span></div>
+    </div>
+  </section>
+  <section class="card secs">
+    <h2>Score by topic</h2>
+    ${per.map(p=>`<div class="srow"><span>${esc(p.name)}</span><div class="trk"><i style="width:${p.ok/p.tot*100}%"></i></div><span class="n">${p.ok}/${p.tot}</span></div>`).join("")}
+  </section>
+  <div class="top-actions">
+    <button class="btn primary" id="retake">Retake test</button>
+    <button class="btn" id="retake-wrong">Retake wrong and skipped only</button>
+  </div>
+  <h2 class="rev-h">Full solutions</h2>
+  <div class="filters" role="group" aria-label="Filter questions">
+    ${[["all","All ("+N+")"],["bad","Incorrect ("+bad+")"],["skip","Skipped ("+skip+")"],["ok","Correct ("+ok+")"]].map(f=>`<button class="chip" data-f="${f[0]}" aria-pressed="${S.filter===f[0]}">${f[1]}</button>`).join("")}
+  </div>
+  <div id="revlist"></div>`;
+  $("#retake").onclick=()=>{reset();renderStart();window.scrollTo({top:0});};
+  $("#retake-wrong").onclick=()=>retakeWrong();
+  document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{S.filter=c.dataset.f;document.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",x.dataset.f===S.filter));drawReview();});
+  drawReview();
+}
+function drawReview(){
+  const L="abcd",list=[];
+  QS.forEach((q,i)=>{
+    const a=S.ans[i],st=a===null?"skip":isRight(i)?"ok":"bad";
+    if(S.filter!=="all"&&S.filter!==st)return;
+    const vt={ok:"Correct · +"+MARKS,bad:"Incorrect · 0",skip:"Skipped · 0"}[st];
+    const opts=q.o.map((t,k)=>{
+      const right=k===q.a,mine=a===k;
+      let cls="",tag="";
+      if(right){cls="right";tag=mine?"Your answer · correct":"Correct answer";}
+      else if(mine){cls="wrong";tag="Your answer";}
+      return `<div class="ro ${cls}"><span class="k">${L[k]}</span><span>${esc(t)}</span>${tag?`<span class="tag">${tag}</span>`:""}</div>`;
+    }).join("");
+    list.push(`<article class="card rev ${st}">
+      <div class="qmeta"><span class="sec">${esc(secOf(i)[2])}</span>${q.case?'<span class="case-tag">Case study</span>':""}<span class="verdict ${st}">${vt}</span></div>
+      <p class="qtext"><span class="qnum">Q${i+1}.</span>${esc(q.q)}</p>
+      ${opts}
+      <div class="sol"><h4>Solution</h4><div>${esc(q.s)}</div></div>
+    </article>`);
+  });
+  $("#revlist").innerHTML=list.length?list.join(""):'<div class="card empty">Nothing here — no questions match this filter.</div>';
+}
+function retakeWrong(){
+  const keep=S.ans.map((a,i)=>isRight(i)?a:null);
+  S={idx:0,ans:keep,flag:Array(N).fill(false),submitted:false,elapsed:0,started:true,filter:"all"};
+  const first=S.ans.findIndex(a=>a===null);S.idx=first<0?0:first;
+  save();renderTest();startTimer();window.scrollTo({top:0});
+}
+
+/* ---------- WIRING ---------- */
+$("#btn-submit").onclick=askSubmit;
+$("#m-cancel").onclick=closeModal;
+$("#m-ok").onclick=submit;
+$("#veil").addEventListener("click",e=>{if(e.target.id==="veil")closeModal();});
+document.addEventListener("keydown",e=>{
+  if($("#veil").classList.contains("on")){if(e.key==="Escape")closeModal();return;}
+  if(S.submitted||$("#bar").hidden)return;
+  if(e.target.tagName==="INPUT"||e.metaKey||e.ctrlKey||e.altKey)return;
+  const k=e.key.toLowerCase();
+  if("abcd".includes(k)&&k.length===1){pick("abcd".indexOf(k));}
+  else if("1234".includes(k)&&k.length===1){pick(+k-1);}
+  else if(e.key==="ArrowRight"||k==="n"){go(S.idx+1);}
+  else if(e.key==="ArrowLeft"||k==="p"){go(S.idx-1);}
+});
+const _rt=renderTest;
+renderTest=function(){_rt();if(!tick&&!S.submitted)startTimer();};
+window.addEventListener("beforeunload",save);
+
+load();
+if(S.submitted){renderResults();}else{renderStart();}
+</script>
+</body>
+</html>

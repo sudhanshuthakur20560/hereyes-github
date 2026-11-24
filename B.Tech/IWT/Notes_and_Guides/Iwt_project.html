@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A simple IWT quiz on forms, meta tags, UI/UX and CSS basics">
+    <meta name="keywords" content="IWT, quiz, HTML, CSS, UI, UX">
+    <meta name="author" content="Your Name">
+
+    <title>IWT Quiz</title>
+
+    <link rel="icon" href="favicon.png">
+
+    <style>
+        body {
+            background-color: #f1f5fb;
+            color: #26344a;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #top {
+            background: linear-gradient(to right, #2446a6, #4b78e0);
+            color: white;
+            padding: 10px;
+        }
+
+        .box {
+            background-color: white;
+            border: 1px solid #c7d5fb;
+            padding: 10px;
+            margin: 10px 0;
+            width: 80%;
+        }
+
+        .answers {
+            background-color: #e5f7ec;
+            color: #167044;
+            border: 1px solid #a7dfba;
+            padding: 10px;
+            margin: 10px 0;
+            width: 80%;
+        }
+    </style>
+
+    <script>
+        function checkAnswers() {
+            var answers = [2, 3, 1, 3, 1, 1, 2, 1, 1, 2, 3, 1];
+            var score = 0;
+            var report = "";
+
+            for (var i = 1; i <= 12; i++) {
+                var options = document.getElementsByName("q" + i);
+                var chosen = 0;
+
+                for (var j = 0; j < options.length; j++) {
+                    if (options[j].checked) {
+                        chosen = Number(options[j].value);
+                    }
+                }
+
+                if (chosen == 0) {
+                    report = report + "Q" + i + ": Not answered<br>";
+                } else if (chosen == answers[i - 1]) {
+                    score = score + 1;
+                    report = report + "Q" + i + ": Correct<br>";
+                } else {
+                    report = report + "Q" + i + ": Wrong<br>";
+                }
+            }
+
+            var result = document.getElementById("result");
+            result.className = "box";
+            result.innerHTML = "<h2>Your Score: " + score + " / 12</h2>" + report;
+            result.scrollIntoView();
+
+            return false;
+        }
+
+        function clearResult() {
+            var result = document.getElementById("result");
+            result.className = "";
+            result.innerHTML = "";
+        }
+    </script>
+</head>
+<body>
+
+    <div id="top">
+        <h1>IWT Quiz</h1>
+        <p style="text-align: center;">Based on Forms, Meta Tags, UI/UX and CSS basics</p>
+    </div>
+
+    <form action="#" method="post" onsubmit="return checkAnswers()" onreset="clearResult()">
+        <div class="box">
+            <h2>Student Details</h2>
+
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+            <br><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            <br><br>
+
+            <label for="roll">Roll No:</label>
+            <input type="number" id="roll" name="roll" min="1" required>
+        </div>
+
+        <div class="box">
+            <h3>Q1. Which tag is used to embed audio in a web page?</h3>
+            <input type="radio" name="q1" value="1"> &lt;sound&gt;<br>
+            <input type="radio" name="q1" value="2"> &lt;audio&gt;<br>
+            <input type="radio" name="q1" value="3"> &lt;mp3&gt;<br>
+            <input type="radio" name="q1" value="4"> &lt;music&gt;
+        </div>
+
+        <div class="box">
+            <h3>Q2. Which attribute shows play and pause buttons on a video?</h3>
+            <input type="radio" name="q2" value="1"> play<br>
+            <input type="radio" name="q2" value="2"> buttons<br>
+            <input type="radio" name="q2" value="3"> controls<br>
+            <input type="radio" name="q2" value="4"> show
+        </div>
+
+        <div class="box">
+            <h3>Q3. Which attribute makes an input field compulsory?</h3>
+            <input type="radio" name="q3" value="1"> required<br>
+            <input type="radio" name="q3" value="2"> placeholder<br>
+            <input type="radio" name="q3" value="3"> value<br>
+            <input type="radio" name="q3" value="4"> maxlength
+        </div>
+
+        <div class="box">
+            <h3>Q4. Which input type checks that the user entered an email format?</h3>
+            <input type="radio" name="q4" value="1"> type="text"<br>
+            <input type="radio" name="q4" value="2"> type="mail"<br>
+            <input type="radio" name="q4" value="3"> type="email"<br>
+            <input type="radio" name="q4" value="4"> type="at"
+        </div>
+
+        <div class="box">
+            <h3>Q5. Which meta tag gives a short description of the page for search engines?</h3>
+            <input type="radio" name="q5" value="1"> &lt;meta name="description"&gt;<br>
+            <input type="radio" name="q5" value="2"> &lt;meta charset&gt;<br>
+            <input type="radio" name="q5" value="3"> &lt;meta name="viewport"&gt;<br>
+            <input type="radio" name="q5" value="4"> &lt;meta name="author"&gt;
+        </div>
+
+        <div class="box">
+            <h3>Q6. What is a favicon?</h3>
+            <input type="radio" name="q6" value="1"> A small icon shown on the browser tab<br>
+            <input type="radio" name="q6" value="2"> A type of font<br>
+            <input type="radio" name="q6" value="3"> A CSS property<br>
+            <input type="radio" name="q6" value="4"> A form control
+        </div>
+
+        <div class="box">
+            <h3>Q7. What does UX mean?</h3>
+            <input type="radio" name="q7" value="1"> Unique Experience<br>
+            <input type="radio" name="q7" value="2"> User Experience<br>
+            <input type="radio" name="q7" value="3"> Universal Extension<br>
+            <input type="radio" name="q7" value="4"> User Exchange
+        </div>
+
+        <div class="box">
+            <h3>Q8. Showing a "Message sent" note after clicking Submit is an example of which UI principle?</h3>
+            <input type="radio" name="q8" value="1"> Feedback<br>
+            <input type="radio" name="q8" value="2"> Consistency<br>
+            <input type="radio" name="q8" value="3"> Simplicity<br>
+            <input type="radio" name="q8" value="4"> Accessibility
+        </div>
+
+        <div class="box">
+            <h3>Q9. Which design style uses simple shapes and solid colours with no shadows or 3D effects?</h3>
+            <input type="radio" name="q9" value="1"> Flat design<br>
+            <input type="radio" name="q9" value="2"> 3D design<br>
+            <input type="radio" name="q9" value="3"> Skeuomorphic design<br>
+            <input type="radio" name="q9" value="4"> Crowded design
+        </div>
+
+        <div class="box">
+            <h3>Q10. Which type of CSS is written inside the &lt;style&gt; tag in the head section?</h3>
+            <input type="radio" name="q10" value="1"> Inline CSS<br>
+            <input type="radio" name="q10" value="2"> Internal CSS<br>
+            <input type="radio" name="q10" value="3"> External CSS<br>
+            <input type="radio" name="q10" value="4"> Default CSS
+        </div>
+
+        <div class="box">
+            <h3>Q11. Which CSS selector has the highest specificity?</h3>
+            <input type="radio" name="q11" value="1"> Element selector (p)<br>
+            <input type="radio" name="q11" value="2"> Class selector (.box)<br>
+            <input type="radio" name="q11" value="3"> ID selector (#top)<br>
+            <input type="radio" name="q11" value="4"> Universal selector (*)
+        </div>
+
+        <div class="box">
+            <h3>Q12. Which CSS function creates a gradient background?</h3>
+            <input type="radio" name="q12" value="1"> linear-gradient()<br>
+            <input type="radio" name="q12" value="2"> color-mix()<br>
+            <input type="radio" name="q12" value="3"> rgb()<br>
+            <input type="radio" name="q12" value="4"> url()
+        </div>
+
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
+    </form>
+
+    <div id="result"></div>
+
+    <div class="answers">
+        <h2>Answers</h2>
+        <ol>
+            <li>&lt;audio&gt;</li>
+            <li>controls</li>
+            <li>required</li>
+            <li>type="email"</li>
+            <li>&lt;meta name="description"&gt;</li>
+            <li>A small icon shown on the browser tab</li>
+            <li>User Experience</li>
+            <li>Feedback</li>
+            <li>Flat design</li>
+            <li>Internal CSS</li>
+            <li>ID selector (#top)</li>
+            <li>linear-gradient()</li>
+        </ol>
+    </div>
+
+
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IWT (Internet & Web Technology) Basic Quiz</title>
+  <style>
+    /* CSS Box Model Structure */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f3f4f6;
+      color: #1f2937;
+      line-height: 1.5;
+      padding: 30px 15px;
+    }
+
+    .quiz-container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 28px;
+      background-color: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+    }
+
+    .quiz-header {
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #e5e7eb;
+      text-align: center;
+    }
+
+    .quiz-header h1 {
+      font-size: 24px;
+      color: #1e3a8a;
+      margin-bottom: 6px;
+    }
+
+    .quiz-header p {
+      font-size: 14px;
+      color: #4b5563;
+    }
+
+    .question-card {
+      margin-bottom: 18px;
+      padding: 16px 20px;
+      background-color: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-left: 4px solid #2563eb;
+      border-radius: 6px;
+    }
+
+    .question-title {
+      font-size: 15px;
+      font-weight: bold;
+      color: #111827;
+      margin-bottom: 12px;
+    }
+
+    .options-list {
+      list-style-type: none;
+    }
+
+    .options-list li {
+      margin-bottom: 8px;
+    }
+
+    .options-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    .options-list label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      background-color: #ffffff;
+      border: 1px solid #d1d5db;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .options-list label:hover {
+      background-color: #eff6ff;
+      border-color: #3b82f6;
+    }
+
+    .options-list input[type="radio"] {
+      accent-color: #2563eb;
+      cursor: pointer;
+    }
+
+    /* Consolidated Final Answer Key Section */
+    .answer-key-section {
+      margin-top: 32px;
+      padding: 20px;
+      background-color: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-left: 4px solid #16a34a;
+      border-radius: 6px;
+    }
+
+    .answer-key-section summary {
+      font-size: 16px;
+      font-weight: bold;
+      color: #166534;
+      cursor: pointer;
+      user-select: none;
+      outline: none;
+    }
+
+    .answer-key-section summary:hover {
+      text-decoration: underline;
+    }
+
+    .answer-items {
+      margin-top: 16px;
+      list-style-type: none;
+    }
+
+    .answer-item {
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px dashed #bbf7d0;
+      font-size: 14px;
+    }
+
+    .answer-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .answer-item strong {
+      color: #14532d;
+    }
+
+    .answer-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      margin-right: 6px;
+      background-color: #16a34a;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: bold;
+      border-radius: 3px;
+    }
+
+    .quiz-footer {
+      margin-top: 24px;
+      padding-top: 14px;
+      border-top: 1px solid #e5e7eb;
+      text-align: center;
+      color: #9ca3af;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="quiz-container">
+    <header class="quiz-header">
+      <h1>Internet &amp; Web Technology (IWT) Quiz</h1>
+      <p>Answer the 6 basic questions below, then check your answers in the final section.</p>
+    </header>
+
+    <form>
+      <!-- Question 1 -->
+      <div class="question-card">
+        <p class="question-title">1. What does HTTP stand for?</p>
+        <ul class="options-list">
+          <li><label><input type="radio" name="q1"> HyperText Transmission Protocol</label></li>
+          <li><label><input type="radio" name="q1"> HyperText Transfer Protocol</label></li>
+          <li><label><input type="radio" name="q1"> High Transfer Text Protocol</label></li>
+          <li><label><input type="radio" name="q1"> Hyperlink Text Tracking Protocol</label></li>
+        </ul>
+      </div>
+
+      <!-- Question 2 -->
+      <div class="question-card">
+        <p class="question-title">2. Which protocol translates domain names (e.g., google.com) into numerical IP addresses?</p>
+        <ul class="options-list">
+          <li><label><input type="radio" name="q2"> FTP (File Transfer Protocol)</label></li>
+          <li><label><input type="radio" name="q2"> SMTP (Simple Mail Transfer Protocol)</label></li>
+          <li><label><input type="radio" name="q2"> DNS (Domain Name System)</label></li>
+          <li><label><input type="radio" name="q2"> DHCP (Dynamic Host Configuration Protocol)</label></li>
+        </ul>
+      </div>
+
+      <!-- Question 3 -->
+      <div class="question-card">
+        <p class="question-title">3. In HTML, which tag is used to create a hyperlink to another web page?</p>
+        <ul class="options-list">
+          <li><label><input type="radio" name="q3"> &lt;link&gt;</label></li>
+          <li><label><input type="radio" name="q3"> &lt;a&gt;</label></li>
+          <li><label><input type="radio" name="q3"> &lt;href&gt;</label></li>
+          <li><label><input type="radio" name="q3"> &lt;url&gt;</label></li>
+        </ul>
+      </div>
+
+      <!-- Question 4 -->
+      <div class="question-card">
+        <p class="question-title">4. What is the standard default port for secure HTTPS traffic?</p>
+        <ul class="options-list">
+          <li><label><input type="radio" name="q4"> 80</label></li>
+          <li><label><input type="radio" name="q4"> 21</label></li>
+          <li><label><input type="radio" name="q4"> 443</label></li>
+          <li><label><input type="radio" name="q4"> 8080</label></li>
+        </ul>
+      </div>
+
+      <!-- Question 5 -->
+      <div class="question-card">
+        <p class="question-title">5. Which HTTP status code indicates that the requested page was not found?</p>
+        <ul class="options-list">
+          <li><label><input type="radio" name="q5"> 200 OK</label></li>
+          <li><label><input type="radio" name="q5"> 404 Not Found</label></li>
+          <li><label><input type="radio" name="q5"> 500 Internal Server Error</label></li>
+          <li><label><input type="radio" name="q5"> 301 Moved Permanently</label></li>
+        </ul>
+      </div>
+
+      <!-- Question 6 -->
+      <div class="question-card">
+        <p class="question-title">6. In the CSS Box Model, which property creates space INSIDE an element's border?</p>
+        <ul class="options-list">
+          <li><label><input type="radio" name="q6"> margin</label></li>
+          <li><label><input type="radio" name="q6"> padding</label></li>
+          <li><label><input type="radio" name="q6"> spacing</label></li>
+          <li><label><input type="radio" name="q6"> outline</label></li>
+        </ul>
+      </div>
+
+      <!-- Final Section: Consolidated Answer Key -->
+      <details class="answer-key-section">
+        <summary>View Answer Key &amp; Explanations</summary>
+        <ul class="answer-items">
+          <li class="answer-item">
+            <span class="answer-badge">Q1</span>
+            <strong>Option B — HyperText Transfer Protocol:</strong> The foundational application protocol used across the World Wide Web.
+          </li>
+          <li class="answer-item">
+            <span class="answer-badge">Q2</span>
+            <strong>Option C — DNS (Domain Name System):</strong> Resolves human-friendly domain names to machine-readable IP addresses.
+          </li>
+          <li class="answer-item">
+            <span class="answer-badge">Q3</span>
+            <strong>Option B — &lt;a&gt; (Anchor):</strong> Creates hyperlinks using the <code>href</code> attribute. (Note: <code>&lt;link&gt;</code> is for linking external stylesheets).
+          </li>
+          <li class="answer-item">
+            <span class="answer-badge">Q4</span>
+            <strong>Option C — Port 443:</strong> Standard port for encrypted HTTPS traffic. Unencrypted HTTP uses port 80.
+          </li>
+          <li class="answer-item">
+            <span class="answer-badge">Q5</span>
+            <strong>Option B — 404 Not Found:</strong> The client contacted the server, but the requested resource does not exist.
+          </li>
+          <li class="answer-item">
+            <span class="answer-badge">Q6</span>
+            <strong>Option B — padding:</strong> In the CSS Box Model, <code>padding</code> creates space inside the border, while <code>margin</code> creates space outside.
+          </li>
+        </ul>
+      </details>
+    </form>
+
+    <footer class="quiz-footer">
+      IWT Basic Quiz &bull; Clean CSS Box Model &bull; Pure HTML &amp; CSS
+    </footer>
+  </div>
+
+</body>
+</html>
